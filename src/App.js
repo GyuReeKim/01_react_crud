@@ -17,7 +17,9 @@ class App extends Component {
         name: '홍길동',
         phone: '010-0000-0001'
       }
-    ]  
+    ],
+    // SEARCH
+    keyword: ''
   }
 
   // CREATE
@@ -48,20 +50,43 @@ class App extends Component {
       )
     })
   }
+
+  // SEARCH
+  handleChange = (e) => {
+    this.setState({
+      keyword: e.target.value,
+    });
+  }
   
   render() {
-    const { information } = this.state;
+    // CREATE & & DELETE & UPDATE & SEARCH
+    const { information, keyword } = this.state;
+
+    const filteredList = information.filter(
+      info => info.name.indexOf(keyword) !== -1
+    );
+
     return (
       <div>
         <PhoneForm
           onCreate={this.handleCreate}
         />
-        {/* {JSON.stringify(information)} */}
+        {/* SEARCH */}
+        <p>
+          <input
+            placeholder="검색 할 이름을 입력하세요.."
+            onChange={this.handleChange}
+            value={keyword}
+          />
+        </p>
+        <hr />
         {/* CREATE */}
+        {/* {JSON.stringify(information)} */}
         {/* <PhoneInfoList data={this.state.information} /> */}
         {/* DELETE & UPDATE */}
         <PhoneInfoList
-          data={information}
+          // data={information}
+          data={filteredList} //SEARCH
           onRemove={this.handleRemove}
           onUpdate={this.handleUpdate}
         />
